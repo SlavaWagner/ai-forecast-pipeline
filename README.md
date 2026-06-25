@@ -85,7 +85,3 @@ You can invoke commands directly or start the interactive CLI dashboard:
   ```
   Runs automated storage verification and ETS calculations tests.
 
----
-
-## License
-MIT License. Fully compliant with copyright rules and third-party library guidelines.
