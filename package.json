@@ -1,0 +1,26 @@
+{
+  "name": "ai-forecast-pipeline-cli",
+  "version": "1.0.0",
+  "description": "Persistent AI Agents CLI for Google Ads Forecasting and Simulation",
+  "main": "bin/index.js",
+  "type": "module",
+  "bin": {
+    "ai-forecast-pipeline": "./bin/index.js"
+  },
+  "scripts": {
+    "start": "node bin/index.js",
+    "setup": "node bin/index.js setup",
+    "dashboard": "node bin/index.js dashboard",
+    "run-workflow": "node bin/index.js run-workflow",
+    "predictions": "node bin/index.js predictions",
+    "test": "node src/verify.js"
+  },
+  "dependencies": {
+    "@google/generative-ai": "^0.21.0",
+    "@inquirer/prompts": "^7.1.0",
+    "axios": "^1.7.9",
+    "chalk": "^5.4.1",
+    "commander": "^12.1.0",
+    "dotenv": "^16.4.5"
+  }
+}
