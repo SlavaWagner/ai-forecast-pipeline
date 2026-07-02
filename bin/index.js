@@ -11,6 +11,7 @@ import path from 'path';
 
 import { getConfig, saveConfig, getAccessToken, refreshAccessToken } from '../src/config.js';
 import { listAgents, getAgent, saveAgent, saveRunLog, initStorage } from '../src/storage.js';
+import BaseAgent from '../src/agents/BaseAgent.js';
 import { calculateETSForecast } from '../src/forecaster.js';
 import { fetchActiveCampaigns, fetchCampaignDailyMetrics } from '../src/googleAds.js';
 import ForecastingAgent from '../src/agents/ForecastingAgent.js';
@@ -548,6 +549,64 @@ agentCmd
   });
 
 // Interactive Dashboard Menu helper
+// Helper to execute an interactive chat session with any agent
+async function runChatSession(agentName) {
+  let targetAgent = agentName;
+  if (!targetAgent) {
+    const agents = listAgents();
+    targetAgent = await select({
+      message: 'Choose an agent to chat with:',
+      choices: agents.map(a => ({ name: `${a.role} (${a.name})`, value: a.name }))
+    });
+  }
+
+  const agent = new BaseAgent(targetAgent);
+  console.log(chalk.bold.cyan(`\n=== Started Chat Session with ${agent.role} (${agent.name}) ===`));
+  console.log(chalk.gray('Type "exit" or "quit" to end the session.\n'));
+
+  const history = [];
+
+  while (true) {
+    const userInput = await input({ message: chalk.bold.green('You: ') });
+    if (!userInput) continue;
+
+    const trimmed = userInput.trim().toLowerCase();
+    if (trimmed === 'exit' || trimmed === 'quit') {
+      console.log(chalk.cyan('\nEnding chat session. Goodbye!\n'));
+      break;
+    }
+
+    let prompt = '';
+    if (history.length > 0) {
+      prompt = `Here is the current chat history of our session:\n${history.map(h => `${h.role}: ${h.text}`).join('\n')}\n\nUser: ${userInput}`;
+    } else {
+      prompt = userInput;
+    }
+
+    try {
+      console.log(chalk.yellow('\nWaiting for agent response...'));
+      const reply = await agent.generateCompletion(prompt, false);
+      
+      console.log(chalk.bold.magenta(`\nAgent (${agent.name}):`));
+      console.log(reply);
+      console.log();
+
+      history.push({ role: 'User', text: userInput });
+      history.push({ role: 'Agent', text: reply });
+    } catch (e) {
+      console.log(chalk.red(`\nError generating response: ${e.message}\n`));
+    }
+  }
+}
+
+// CHAT Command
+program
+  .command('chat [agentName]')
+  .description('Start an interactive chat session with an AI Agent')
+  .action(async (agentName) => {
+    await runChatSession(agentName);
+  });
+
 async function showInteractiveDashboard() {
   console.clear();
   console.log(getAsciiLogo());
@@ -564,9 +623,10 @@ async function showInteractiveDashboard() {
     choices: [
       { name: '1. Run Forecasting Pipeline (run-workflow)', value: 'run-workflow' },
       { name: '2. Run Scaling & Budget Simulation (predictions)', value: 'predictions' },
-      { name: '3. Setup Google Ads API Connection (setup)', value: 'setup' },
-      { name: '4. List Registered AI Agents', value: 'list-agents' },
-      { name: '5. Exit', value: 'exit' }
+      { name: '3. Chat with an AI Agent (chat)', value: 'chat' },
+      { name: '4. Setup Google Ads API Connection (setup)', value: 'setup' },
+      { name: '5. List Registered AI Agents', value: 'list-agents' },
+      { name: '6. Exit', value: 'exit' }
     ]
   });
 
@@ -575,6 +635,9 @@ async function showInteractiveDashboard() {
     await pressEnterToContinue();
   } else if (choice === 'predictions') {
     await program.commands.find(c => c.name() === 'predictions').parseAsync(['node', 'index.js', 'predictions']);
+    await pressEnterToContinue();
+  } else if (choice === 'chat') {
+    await runChatSession();
     await pressEnterToContinue();
   } else if (choice === 'setup') {
     await program.commands.find(c => c.name() === 'setup').parseAsync(['node', 'index.js', 'setup']);
