@@ -15,7 +15,8 @@ const DEFAULT_CONFIG = {
   googleAdsVersion: 'v24',
   loginCustomerId: '',
   accessToken: '',
-  tokenExpiry: 0
+  tokenExpiry: 0,
+  geminiApiKey: 'antigravity'
 };
 
 export function getConfig() {
