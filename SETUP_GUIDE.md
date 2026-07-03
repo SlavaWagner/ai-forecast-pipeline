@@ -2,6 +2,18 @@
 
 This guide details how to configure your Google Ads API credentials to connect with `ai-forecast-pipeline`.
 
+## Crucial Requirement: Antigravity CLI
+
+This tool is designed to be executed directly inside the **Antigravity CLI** environment. It utilizes the Antigravity Agent Bridge to process AI completions.
+
+Before configuring or running the pipeline, ensure that:
+1. **Antigravity** is installed on your machine.
+2. The Antigravity CLI has been activated. Run the following command in your terminal to initialize and activate it:
+   ```bash
+   agy
+   ```
+If the Antigravity CLI is not active (`agy`), the AI completions will fail or prompt for manual bridge copies. Always start the tool from within an activated Antigravity CLI terminal.
+
 ---
 
 ## 1. Google Cloud Project Setup
