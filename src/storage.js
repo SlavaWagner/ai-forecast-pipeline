@@ -1,4 +1,4 @@
-import fs from 'fs';
+﻿import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
@@ -25,7 +25,7 @@ When you receive historical metrics and calculated projections, analyze the resu
 - Opportunities to unlock extra traffic/conversions.
 - Formulate answers in a clear, executive English report using markdown tables.`,
     skills: ['LLMGenerateSkill'],
-    model: 'gemini-1.5-flash'
+    model: 'antigravity'
   },
   simulator: {
     name: 'simulator',
@@ -45,7 +45,7 @@ Please structure your response with:
 3. Mathematical Logic: Briefly explain the scaling coefficients and diminishing returns calculations.
 4. Strategic Actions: Key recommendations on how to distribute the new budget and prevent efficiency loss.`,
     skills: ['LLMGenerateSkill'],
-    model: 'gemini-1.5-flash'
+    model: 'antigravity'
   },
   advisor: {
     name: 'advisor',
@@ -63,7 +63,7 @@ Based on the forecast and simulated trends, your objective is to provide actiona
 
 Your recommendations must be concrete, specific to Google Ads, and actionable. Avoid generic advice.`,
     skills: ['LLMGenerateSkill'],
-    model: 'gemini-1.5-flash'
+    model: 'antigravity'
   }
 };
 
@@ -123,3 +123,4 @@ export function saveRunLog(runLog) {
   fs.writeFileSync(logPath, JSON.stringify(runLog, null, 2), 'utf8');
   return logPath;
 }
+

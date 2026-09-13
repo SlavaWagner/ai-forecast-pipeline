@@ -54,41 +54,44 @@ Enter your Client ID, Client Secret, Customer ID, and Developer Token. The setup
 
 ---
 
-## Command Reference
+## CLI & Agent Command Reference
 
-You can invoke commands directly or start the interactive CLI dashboard:
+Alle Befehle werden innerhalb der Google Antigravity CLI (`agy`) ausgeführt:
 
-* **Interactive Terminal Dashboard**:
-  ```bash
-  node bin/index.js dashboard
-  ```
-  *(Launches the beautiful interactive start screen in your terminal. You can navigate, run forecasting, or inspect agent settings using your arrow keys).*
+| Befehl | Argumente / Optionen | Kurzbeschreibung |
+| :--- | :--- | :--- |
+| `node bin/index.js` / `dashboard` | Keine | Startet das interaktive Terminal-Dashboard zur menügeführten Navigation, Statusüberprüfung und Workflow-Ausführung. |
+| `node bin/index.js run-workflow` | `--sandbox` (`-s`) | Führt die vollständige Zeitreihen-Prognose (ETS Exponentielle Glättung, Saisonalitätsindizes, Impression Share Verlustdiagnose) auf Google Ads API Daten durch und erstellt den Prognose-Report in `storage/runs/`. |
+| `node bin/index.js predictions` | Keine *(interaktive Abfrage von Budget-Multiplikator & CVR)* | Simuliert Budget-Skalierungsszenarien über Zeithorizonte (z. B. 14 Monate) unter Berücksichtigung von Grenzerträgen (Log-Return Curves). |
+| `node bin/index.js chat` | `[agentName]` | Startet eine interaktive Chat-Session mit den persistenten Agenten (`forecaster`, `simulator`, `advisor`). |
+| `node bin/index.js agent list` | Keine | Listet alle persistenten Forecasting-Agenten mit Rolle, Prompt und Parametern auf. |
+| `node bin/index.js agent view <name>` | `<name>` | Zeigt den detaillierten System-Prompt und die ökonometrischen Modellregeln des angegebenen Agenten an. |
+| `node bin/index.js setup` | Keine | Interaktiver Konfigurationsassistent für Google Ads API Credentials und OAuth2-Autorisierung auf Port 8085. |
 
-* **Run Forecasting Pipeline**:
-  ```bash
-  node bin/index.js run-workflow
-  ```
-  - Prompts for Forecast Period and Seasonality Pattern in days.
-  - Queries daily campaign metrics from the Google Ads API.
-  - Calculates ETS and runs the AI Forecaster and Strategy Advisor.
-  - Compiles a complete markdown report to `storage/runs/`.
-  
-* **Run Budget Scaling Simulation**:
-  ```bash
-  node bin/index.js predictions
-  ```
-  - Simulates campaign yield for custom months (e.g. 14 months) with a budget multiplier (e.g. 2.0x for double budget) and Conversion Rate (CVR) improvements.
+### Beteiligte KI-Agenten
 
-* **List AI Agents**:
-  ```bash
-  node bin/index.js agent list
-  ```
+*   **`forecaster` (Expert Data Analyst Agent)**: Berechnet Trend- und Saisonalitätsmuster ($S_i$), analysiert Klick-, Impression- und Conversion-Historien sowie Lost Impression Shares.
+*   **`simulator` (Budget & Campaign Scenario Simulator Agent)**: Modelliert zukünftige Skalierungsergebnisse bei Budgeterhöhungen (z. B. $2\times$) unter Einbeziehung sinkender Grenzerträge.
+*   **`advisor` (Strategic Recommendations Advisor Agent)**: Formuliert konkrete operative Handlungsempfehlungen für Offer, Landing Page und Bidding-Strategien.
 
-* **Verify Installation**:
-  ```bash
-  npm test
-  ```
-  Runs automated storage verification and ETS calculations tests.
+#### Anwendungsbeispiele:
+
+```bash
+# 1. Interaktives Terminal-Dashboard aufrufen:
+node bin/index.js dashboard
+
+# 2. Prognose-Workflow im Sandbox-Modus ausführen:
+node bin/index.js run-workflow --sandbox
+
+# 3. Live Google Ads Account Forecast berechnen:
+node bin/index.js run-workflow
+
+# 4. Budget-Skalierungs-Simulation starten:
+node bin/index.js predictions
+
+# 5. Mit dem Data Analyst Agenten chatten:
+node bin/index.js chat forecaster
+```
 
 ---
 
