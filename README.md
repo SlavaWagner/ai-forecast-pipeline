@@ -58,15 +58,15 @@ Enter your Client ID, Client Secret, Customer ID, and Developer Token. The setup
 
 Alle Befehle werden innerhalb der Google Antigravity CLI (`agy`) ausgeführt:
 
-| Befehl | Argumente / Optionen | Kurzbeschreibung |
-| :--- | :--- | :--- |
-| `node bin/index.js` / `dashboard` | Keine | Startet das interaktive Terminal-Dashboard zur menügeführten Navigation, Statusüberprüfung und Workflow-Ausführung. |
-| `node bin/index.js run-workflow` | `--sandbox` (`-s`) | Führt die vollständige Zeitreihen-Prognose (ETS Exponentielle Glättung, Saisonalitätsindizes, Impression Share Verlustdiagnose) auf Google Ads API Daten durch und erstellt den Prognose-Report in `storage/runs/`. |
-| `node bin/index.js predictions` | Keine *(interaktive Abfrage von Budget-Multiplikator & CVR)* | Simuliert Budget-Skalierungsszenarien über Zeithorizonte (z. B. 14 Monate) unter Berücksichtigung von Grenzerträgen (Log-Return Curves). |
-| `node bin/index.js chat` | `[agentName]` | Startet eine interaktive Chat-Session mit den persistenten Agenten (`forecaster`, `simulator`, `advisor`). |
-| `node bin/index.js agent list` | Keine | Listet alle persistenten Forecasting-Agenten mit Rolle, Prompt und Parametern auf. |
-| `node bin/index.js agent view <name>` | `<name>` | Zeigt den detaillierten System-Prompt und die ökonometrischen Modellregeln des angegebenen Agenten an. |
-| `node bin/index.js setup` | Keine | Interaktiver Konfigurationsassistent für Google Ads API Credentials und OAuth2-Autorisierung auf Port 8085. |
+| Befehl | Kurzbeschreibung |
+| :--- | :--- |
+| `node bin/index.js` / `dashboard` | Startet das interaktive Terminal-Dashboard zur menügeführten Navigation, Statusüberprüfung und Workflow-Ausführung. |
+| `node bin/index.js run-workflow` | Führt die vollständige Zeitreihen-Prognose (ETS Exponentielle Glättung, Saisonalitätsindizes, Impression Share Verlustdiagnose) auf Google Ads API Daten durch und erstellt den Prognose-Report in `storage/runs/`. |
+| `node bin/index.js predictions` | Simuliert Budget-Skalierungsszenarien über Zeithorizonte (z. B. 14 Monate) unter Berücksichtigung von Grenzerträgen (Log-Return Curves). |
+| `node bin/index.js chat` | Startet eine interaktive Chat-Session mit den persistenten Agenten (`forecaster`, `simulator`, `advisor`). |
+| `node bin/index.js agent list` | Listet alle persistenten Forecasting-Agenten mit Rolle, Prompt und Parametern auf. |
+| `node bin/index.js agent view <name>` | Zeigt den detaillierten System-Prompt und die ökonometrischen Modellregeln des angegebenen Agenten an. |
+| `node bin/index.js setup` | Interaktiver Konfigurationsassistent für Google Ads API Credentials und OAuth2-Autorisierung auf Port 8085. |
 
 ### Beteiligte KI-Agenten
 
