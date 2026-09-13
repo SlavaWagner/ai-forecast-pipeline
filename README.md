@@ -4,6 +4,11 @@
 
 All model execution runs locally inside your CLI using the **Antigravity Agent Bridge**, removing any dependency on an external Gemini API key.
 
+> [!IMPORTANT]
+> **Prerequisite for AI Processing:**
+> Please start Google Antigravity beforehand using the command **`agy`** in your console!
+> Interactive chat sessions, asset generation workflows, and AI processing run exclusively **INSIDE the Antigravity CLI**. In a standard terminal shell outside Antigravity, no AI processing takes place, and static execution outputs are intercepted with a guidance notice.
+
 ---
 
 ## Key Features & Architecture

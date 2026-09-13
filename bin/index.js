@@ -111,11 +111,73 @@ function generateMockCampaignData(days = 30) {
   return history;
 }
 
+// Check if running inside Google Antigravity CLI (agy)
+function isRunningInsideAntigravity() {
+  // Developer/CLI bypass flag
+  if (process.argv.includes('--force') || process.argv.includes('--inside-agy')) {
+    return true;
+  }
+  return Boolean(
+    process.env.ANTIGRAVITY_PROJECT_ID ||
+    process.env.ANTIGRAVITY_LS_VERSION ||
+    process.env.ANTIGRAVITY_SOURCE_METADATA ||
+    process.env.ANTIGRAVITY_TRAJECTORY_ID ||
+    process.env.ANTIGRAVITY_AGENT ||
+    process.env.JETSKI_APP_DATA_DIR ||
+    process.env.AGY_SESSION ||
+    process.env.AGY
+  );
+}
+
+// Interceptor notice: skips static output and instructs user to start Antigravity
+function showAgyPrerequisiteWarning(attemptedCmd) {
+  const purpleBox = chalk.hex('#a855f7');
+  const greenText = chalk.bold.hex('#1dd900');
+  const cyanText = chalk.bold.hex('#06b6d4');
+  const whiteBold = chalk.bold.white;
+  
+  console.log(getAsciiLogo());
+  console.log(purpleBox('================================================================================'));
+  console.log(purpleBox('⚠️   VORBEDINGUNG ERFORDERLICH: GOOGLE ANTIGRAVITY CLI ("agy")'));
+  console.log(purpleBox('================================================================================'));
+  console.log();
+  console.log(whiteBold('  Die AI Forecast Pipeline funktioniert ausschließlich'));
+  console.log(whiteBold('  INNERHALB der Antigravity CLI!'));
+  console.log();
+  console.log(chalk.yellow('  Starte bitte vorher Antigravity mit dem Befehl "agy" und anschließend'));
+  console.log(chalk.yellow('  kannst du mit den Befehlen der ai-forecast-pipeline chatten und die'));
+  console.log(chalk.yellow('  ETS-Forecasting- und Budget-Simulations-Workflows bedienen.'));
+  console.log();
+  console.log(chalk.gray('  Hinweis: Auf dieser normalen Terminal-Ebene findet keine KI-Verarbeitung statt.'));
+  console.log(chalk.gray('  Die Wiedergabe statischer Outputs wurde übersprungen.'));
+  console.log();
+  console.log(cyanText('  👉 SCHRITT 1:'));
+  console.log(whiteBold('     Öffne deine Konsole und starte Antigravity mit folgendem Befehl:'));
+  console.log();
+  console.log('        ' + greenText('agy'));
+  console.log();
+  console.log(cyanText('  👉 SCHRITT 2:'));
+  console.log(whiteBold('     In Antigravity kannst du interaktiv mit den Forecasting-Agenten'));
+  console.log(whiteBold('     chatten und sämtliche ETS- und Budget-Scaling-Szenarien steuern.'));
+  console.log();
+  console.log(purpleBox('================================================================================'));
+  console.log(chalk.gray('  (Entwickler-Override:   Befehl mit "--force" oder "--inside-agy" ausführen)'));
+  console.log();
+}
+
+// Intercept execution early if executed in normal shell outside Antigravity
+const rawArgs = process.argv.slice(2);
+
+if (!isRunningInsideAntigravity()) {
+  showAgyPrerequisiteWarning(rawArgs.join(' '));
+  process.exit(0);
+}
+
 const program = new Command();
 
 program
   .name('ai-forecast-pipeline')
-  .description('Google Ads AI Forecasting & Budget Simulation CLI')
+  .description('Google Ads AI Forecasting & Budget Simulation CLI (requires Antigravity CLI)')
   .version('1.0.0');
 
 program.addHelpText('before', getAsciiLogo());
